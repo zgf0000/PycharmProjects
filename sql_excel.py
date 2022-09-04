@@ -49,8 +49,8 @@ def tc():
     xq = sheet1.range('B3').value
     jc = sheet1.range('C5').value
     counts=2 #插入的行数标记
-    n=3
-    while n<8:
+    n=2
+    while n<36:
         print("开始外循环")
         i=6
         while i<19:  # 13个班有13行数据
@@ -60,28 +60,46 @@ def tc():
             km_value = numToStr(n) + str(i)
             bj = sheet1.range(bj_value).value
             km_jz = sheet1.range(km_value).value
-            km_jz = km_jz.split('\n')
-            print(km_jz[1])
-            tbj_value = "A" + str(counts)  # 填充sheet2表格
-            txq_value = "D" + str(counts)
-            tjc_value = "E" + str(counts)
+            try:
+                km_jz = km_jz.split('\n')
+                print("插入的行：",counts)
+            except:
+                print("插入的行：",counts)
+
+            # 开始填充sheet2表格
+            tbj_value = "A" + str(counts)
             tjz_value = "B" + str(counts)
             tkm_value = "C" + str(counts)
+            txq_value = "D" + str(counts)
+            tjc_value = "E" + str(counts)
+
+
 
             sheet2.range(tbj_value).value = bj  # 班级
-            sheet2.range(txq_value).value = xq  # 星期
-            sheet2.range(tjc_value).value = jc  # 节次
-            sheet2.range(tjz_value).value = km_jz[0]  # 科目
-            sheet2.range(tkm_value).value = km_jz[1]  # 教者
+            aa = (n - 1) % 7
+            if aa == 0:
+                aa = 7
+            bb = int((n - 2) / 7) + 1
+            sheet2.range(txq_value).value = bb  # 星期
+            sheet2.range(tjc_value).value = aa   # 节次
+            try:
+                sheet2.range(tjz_value).value = km_jz[0]  # 科目
+                sheet2.range(tkm_value).value = km_jz[1]  # 教者
+            except:
+                sheet2.range(tjz_value).value = km_jz  # 科目
+                sheet2.range(tkm_value).value = "待定"  # 教者
+
             i=i+1
-            counts=counts+1
+            counts = counts + 1
+
+
         n=n+1
-        counts=counts+1
+        # counts=counts+1
 
 
 # # 按间距中的绿色按钮以运行脚本。
 if __name__ == '__main__':
-    print(numToStr(4))
+    # print(numToStr(4))
     tc()
 
 # # 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
